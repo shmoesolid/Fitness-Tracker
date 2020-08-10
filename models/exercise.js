@@ -11,19 +11,24 @@ const ExerciseSchema = new Schema({
     trim: true
   },
   distance: {
-    type: Number
+    type: Number,
+    default: 0
   },
   weight: {
-    type: Number
+    type: Number,
+    default: 0
   },
   sets: {
-    type: Number
+    type: Number,
+    default: 0
   },
   reps: {
-    type: Number
+    type: Number,
+    default: 0
   },
   duration: {
-    type: Number
+    type: Number,
+    default: 0
   }
 });
 
