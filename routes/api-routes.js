@@ -7,7 +7,7 @@ module.exports = function(app) {
     // why bother doing this when just trying to get last only
     app.get("/api/workouts", function(req, res) {
 
-        // ..
+        // get all
         db.Workout
             .find({})
             .then( data => res.json(data) )
@@ -29,10 +29,10 @@ module.exports = function(app) {
 
     });
 
-    // ..
+    // within what range?
     app.get("/api/workouts/range", function(req, res) {
 
-        // ..
+        // get all i guess
         db.Workout
             .find({})
             .then( data => res.json(data) )
@@ -58,7 +58,7 @@ module.exports = function(app) {
                 // error
                 if (err) return res.send(err);
 
-                // run workout schema add method and save to db
+                // run workout schema add method and save
                 wo.add(data);
                 wo.save(
                     function (err, result) 
@@ -72,13 +72,14 @@ module.exports = function(app) {
         );
     });
 
-    // ..
+    // create new workout
     app.post("/api/workouts", function({body}, res) {
 
-        // create workout using body data
+        // create workout using body data and set date
         const workout = new db.Workout(body);
         workout.day = new Date();
 
+        // create it
         db.Workout
             .create(workout)
             .then(dbData => res.json(dbData) )

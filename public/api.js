@@ -2,7 +2,7 @@ const API = {
   async getLastWorkout() {
     let res;
     try {
-      res = await fetch("/api/workouts");
+      res = await fetch("/api/workouts/last"); // change from "/api/workouts"
     } catch (err) {
       console.log(err)
     }
