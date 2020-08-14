@@ -77,7 +77,7 @@ module.exports = function(app) {
 
         // create workout using body data and set date
         const workout = new db.Workout(body);
-        workout.day = new Date();
+        workout.day = Date.now();
 
         // create it
         db.Workout
