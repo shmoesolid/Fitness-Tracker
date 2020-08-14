@@ -1,5 +1,5 @@
 
-var db = require("../models");
+const db = require("../models");
 const mongoose = require("mongoose");
 
 module.exports = function(app) {
