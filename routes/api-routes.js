@@ -32,9 +32,14 @@ module.exports = function(app) {
     // within what range?
     app.get("/api/workouts/range", function(req, res) {
 
-        // get all i guess
+        // get all up until the last sunday? or..
+        // get all up until the current day of last week
+        var d = new Date();
+        //var lastSunday = d.setDate(d.getDate() - d.getDay() - 1);
+        var lastWeek = d.setDate(d.getDate() - d.getDay() - (6 - d.getDay()) - 2);
+
         db.Workout
-            .find({})
+            .find({ day: { "$gte": lastWeek }})
             .then( data => res.json(data) )
             .catch( err => res.json(err) );
 
@@ -77,7 +82,7 @@ module.exports = function(app) {
 
         // create workout using body data and set date
         const workout = new db.Workout(body);
-        workout.day = Date.now();
+        workout.day = new Date().getTime();
 
         // create it
         db.Workout

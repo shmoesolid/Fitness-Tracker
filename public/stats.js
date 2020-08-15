@@ -1,5 +1,12 @@
 // get all workout data from back-end
 
+////////////////////////////////////////////////////////////////////////
+// updated this file to provide quick fix to stats display
+// this current setup will only provide the totals for the last week's workouts only
+// 
+// ie: if you worked out multiple previous fridays, it will not calculate all those
+// fridays together, the last one will overwrite any previous
+
 fetch("/api/workouts/range")
   .then(response => {
     return response.json();
@@ -35,6 +42,11 @@ function generatePalette() {
 }
 
 function populateChart(data) {
+  // use new functions
+  let durations2 = duration2(data);
+  let pounds2 = calculateTotalWeight2(data);
+
+  // continue with old
   let durations = duration(data);
   let pounds = calculateTotalWeight(data);
   let workouts = workoutNames(data);
@@ -62,7 +74,7 @@ function populateChart(data) {
           label: "Workout Duration In Minutes",
           backgroundColor: "red",
           borderColor: "red",
-          data: durations,
+          data: durations2, ////////////////////// using new function data
           fill: false
         }
       ]
@@ -108,7 +120,7 @@ function populateChart(data) {
       datasets: [
         {
           label: "Pounds",
-          data: pounds,
+          data: pounds2, ////////////////////// using new function data
           backgroundColor: [
             "rgba(255, 99, 132, 0.2)",
             "rgba(54, 162, 235, 0.2)",
@@ -154,7 +166,7 @@ function populateChart(data) {
         {
           label: "Excercises Performed",
           backgroundColor: colors,
-          data: durations
+          data: durations ////////////////////// using original function data
         }
       ]
     },
@@ -174,7 +186,7 @@ function populateChart(data) {
         {
           label: "Excercises Performed",
           backgroundColor: colors,
-          data: pounds
+          data: pounds ////////////////////// using original function data
         }
       ]
     },
@@ -187,6 +199,39 @@ function populateChart(data) {
   });
 }
 
+//////////////////////////////////////////////////////////////////////
+// created these to fix the line and bar graph displays
+function duration2(data) {
+  let durations = [];
+
+  data.forEach(workout => {
+    var day = new Date(workout.day).getDay();
+    durations[day] = 0;
+    
+    workout.exercises.forEach(exercise => {
+      durations[day] += exercise.duration;
+    });
+  });
+
+  return durations;
+}
+function calculateTotalWeight2(data) {
+  let total = [];
+
+  data.forEach(workout => {
+    var day = new Date(workout.day).getDay();
+    total[day] = 0;
+
+    workout.exercises.forEach(exercise => {
+      total[day] += exercise.weight;
+    });
+  });
+
+  return total;
+}
+
+//////////////////////////////////////////////////////////////////////
+// originals below (still used for pie and doughnut charts)
 function duration(data) {
   let durations = [];
 
